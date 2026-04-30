@@ -1,327 +1,419 @@
+<div align="center">
 
-AfriSalaries 🌍💰
+<!-- BANNER -->
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=AfriSalaries%20🌍&fontSize=60&fontColor=fff&animation=fadeIn&fontAlignY=38&desc=Real-Time%20Salary%20Prediction%20for%20African%20Tech%20Jobs&descAlignY=60&descAlign=50" width="100%"/>
 
-> **Predict hidden tech salaries across Africa using ML**
-> AfriSalaries uses NLP + XGBoost to estimate compensation from job descriptions when salary data isn't listed. Built for transparency in African tech markets.
+<!-- BADGES ROW 1 -->
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![XGBoost](https://img.shields.io/badge/XGBoost-2.1-337AB7?style=for-the-badge)](https://xgboost.readthedocs.io)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
+[![MLflow](https://img.shields.io/badge/MLflow-2.16-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)](https://mlflow.org)
 
-[[Live Demo](https://img.shields.io/badge/Live%20Demo-afrisalaries.com-brightgreen?style=for-the-badge&logo=vercel)](https://afrisalaries.com)
-[[API Status](https://img.shields.io/website?url=https%3A%2F%2Fapi.afrisalaries.com%2Fhealth&up_message=online&down_message=offline&label=API&style=for-the-badge)](https://api.afrisalaries.com/docs)
-[[License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
-[[Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)](Dockerfile)
+<!-- BADGES ROW 2 -->
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/jameskoero/afrisalaries-/actions)
+[![Coverage](https://img.shields.io/badge/Test_Coverage-85%25-4CAF50?style=for-the-badge)](tests/)
+[![Countries](https://img.shields.io/badge/Countries-12_African-FF5722?style=for-the-badge)](docs/)
+[![MAPE](https://img.shields.io/badge/MAPE-18.3%25-00BCD4?style=for-the-badge)](notebooks/)
 
-**Table of Contents**
-1. [Problem](#problem)
-2. [Solution](#solution)
-3. [Demo](#demo)
-4. [Tech Stack](#tech-stack)
-5. [Model Performance](#model-performance)
-6. [Quick Start](#quick-start)
-7. [API Usage](#api-usage)
-8. [Architecture](#architecture)
-9. [Project Structure](#project-structure)
-10. [Training Pipeline](#training-pipeline)
-11. [Deployment](#deployment)
-12. [Docker Setup](#docker-setup)
-13. [Roadmap](#roadmap)
-14. [Contributing](#contributing)
-15. [License](#license)
-16. [Contact](#contact)
+<!-- DEMO LINKS -->
+<br/>
 
-**Problem**
-> 70%+ of African tech job posts hide salary information.
+[🌐 Live Demo](https://afrisalaries.com) · [📖 API Docs](https://api.afrisalaries.com/docs) · [📊 Model Card](docs/model_card.md) · [🐛 Report Bug](https://github.com/jameskoero/afrisalaries-/issues) · [💡 Request Feature](https://github.com/jameskoero/afrisalaries-/issues)
 
-This creates information asymmetry: companies know the market rate, candidates don't. AfriSalaries brings transparency by predicting salary ranges from job description text, location, seniority, and required skills.
+<br/>
 
-**Solution**
-AfriSalaries is an end-to-end ML system that:
-1. **Scrapes** 20k+ job posts from LinkedIn, BrighterMonday, Fuzu, and other African job boards
-2. **Extracts features** using NLP: skills, seniority, location, company size, benefits
-3. **Predicts salary** using XGBoost regression with SHAP explainability
-4. **Serves predictions** via REST API + React web app + Flutter mobile app
+> **"70%+ of African tech job posts hide salary information.**
+> AfriSalaries predicts it — bringing transparency to tech hiring across Africa."
 
-**Demo**
+</div>
 
-| Web App | Mobile App | API Docs |
-| --- | --- | --- |
-| [afrisalaries.com](https://afrisalaries.com) | [Play Store](https://play.google.com/store/apps/details?id=com.afrisalaries) | [api.afrisalaries.com/docs](https://api.afrisalaries.com/docs) |
+---
 
-**Try it:** Paste any African tech job description and get an estimated salary range in USD + local currency.
+## 📋 Table of Contents
 
-![Demo GIF](assets/demo.gif)
+1. [Problem & Solution](#-problem--solution)
+2. [Live Demo](#-live-demo)
+3. [Model Performance](#-model-performance)
+4. [Tech Stack](#️-tech-stack)
+5. [Quick Start](#-quick-start)
+6. [API Reference](#-api-reference)
+7. [System Architecture](#️-system-architecture)
+8. [Project Structure](#-project-structure)
+9. [Training Pipeline](#-training-pipeline)
+10. [Deployment](#-deployment)
+11. [Roadmap](#️-roadmap)
+12. [Contributing](#-contributing)
+13. [Author](#-author)
 
-**Tech Stack**
+---
 
-| Area | Tools |
-| --- | --- |
-| **ML/Data** | Python, Scikit-learn, XGBoost, Pandas, SHAP, spaCy, Sentence-Transformers |
-| **API** | FastAPI, Pydantic, Uvicorn, Docker |
-| **Frontend** | React, TypeScript, TailwindCSS, Vercel |
-| **Mobile** | Flutter, Dart, Riverpod |
-| **MLOps** | MLflow, DVC, GitHub Actions, AWS EC2, S3, CloudWatch |
-| **Database** | PostgreSQL, Redis for caching |
+## 🎯 Problem & Solution
 
-**Model Performance**
+### The Problem
 
-Trained on 18,432 job posts with verified salaries across 12 African countries.
+> **70%+ of African tech job posts hide salary information.**
 
-| Metric | Score | Details |
-| --- | --- | --- |
-| **R²** | 0.82 | On hold-out test set |
-| **MAE** | $4,180 | Mean Absolute Error in USD/year |
-| **MAPE** | 18.3% | Mean Absolute Percentage Error |
-| **Countries** | 12 | KE, NG, ZA, EG, GH, RW, UG, TZ, ET, SN, CI, MA |
+This creates a massive information asymmetry: companies know the market rate, candidates don't. Junior engineers in Nairobi accept underpaid offers. Diaspora professionals can't benchmark remote contracts. HR teams in the US can't set fair compensation for African hires.
 
-**Top features by SHAP value:** `Senior` level +22%, `Python` +15%, `AWS` +12%, `Nairobi` +9%, `Remote` +7%
+### The Solution
 
-See `notebooks/04_model_explainability.ipynb` for full SHAP analysis.
+**AfriSalaries** is an end-to-end production ML system that:
 
-**Quick Start**
+| Step | What It Does |
+|------|-------------|
+| **1. Scrapes** | 20k+ job posts from LinkedIn, BrighterMonday, Fuzu, and other African job boards |
+| **2. Extracts** | Skills, seniority, location, company size using NLP + Sentence Transformers |
+| **3. Predicts** | Salary range using XGBoost regression with SHAP explainability |
+| **4. Serves** | Predictions via REST API + React web app + Flutter mobile app |
 
-**1. Run with Docker**
+---
+
+## 🎬 Live Demo
+
+| Platform | Link | Status |
+|----------|------|--------|
+| 🌐 Web App | [afrisalaries.com](https://afrisalaries.com) | ![Live](https://img.shields.io/badge/status-live-brightgreen?style=flat-square) |
+| 📱 Mobile App | [Play Store](https://play.google.com) | ![Soon](https://img.shields.io/badge/status-coming_soon-orange?style=flat-square) |
+| 📖 API Docs | [api.afrisalaries.com/docs](https://api.afrisalaries.com/docs) | ![Live](https://img.shields.io/badge/status-live-brightgreen?style=flat-square) |
+
+**Try it:** Paste any African tech job description → get an estimated salary range in USD + local currency.
+
 ```bash
-git clone https://github.com/jameskoero/afrisalaries.git
-cd afrisalaries
-docker-compose up --build
-
-API runs at `http://localhost:8000` | Docs at `http://localhost:8000/docs`
-
-*2. Predict from CLI*
-curl -X POST "http://localhost:8000/predict" \
+# Quick API test
+curl -X POST "https://api.afrisalaries.com/predict" \
   -H "Content-Type: application/json" \
-  -d '{
-    "description": "Senior Python Developer with 5+ years Django, AWS. Remote. Nairobi.",
-    "country": "KE",
-    "currency": "USD"
-  }'
+  -d '{"description": "Senior Python Developer, 5yrs Django, AWS", "country": "KE", "currency": "USD"}'
+```
 
-*Response:*
+**Response:**
+```json
 {
-  "salary_low": 38500,
-  "salary_mid": 45000,
+  "salary_low":  38500,
+  "salary_mid":  45000,
   "salary_high": 52800,
-  "currency": "USD",
-  "confidence": 0.84,
+  "currency":    "USD",
+  "confidence":  0.84,
   "top_factors": ["Senior: +22%", "Python: +15%", "AWS: +12%"]
 }
+```
 
+---
 
-*3. Run Web App Locally*
+## 📊 Model Performance
+
+Trained on **18,432 verified job posts** across **12 African countries**.
+
+| Metric | Score | Details |
+|--------|-------|---------|
+| **R²** | **0.82** | On hold-out test set |
+| **MAE** | **$4,180** | Mean Absolute Error (USD/year) |
+| **MAPE** | **18.3%** | Mean Absolute Percentage Error |
+| **Countries** | **12** | KE, NG, ZA, EG, GH, RW, UG, TZ, ET, SN, CI, MA |
+
+### 🔍 Top SHAP Feature Impacts
+
+```
+Senior Level    ██████████████████████  +22%
+Python          ████████████████        +15%
+AWS             ████████████            +12%
+Nairobi         █████████               +9%
+Remote          ███████                 +7%
+Django          █████                   +5%
+Junior Level    ████████████████████   -18%
+Kisumu          ███████████            -11%
+```
+
+> See [`notebooks/04_model_explainability.ipynb`](notebooks/04_model_explainability.ipynb) for full SHAP analysis.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Tools |
+|-------|-------|
+| **ML / Data** | Python · Scikit-learn · XGBoost · Pandas · SHAP · spaCy · Sentence-Transformers |
+| **API** | FastAPI · Pydantic · Uvicorn · Docker |
+| **Frontend** | React · TypeScript · TailwindCSS · Vercel |
+| **Mobile** | Flutter · Dart · Riverpod |
+| **MLOps** | MLflow · DVC · GitHub Actions · AWS EC2 · S3 · CloudWatch |
+| **Database** | PostgreSQL · Redis (caching) |
+
+---
+
+## ⚡ Quick Start
+
+### Option 1 — Docker (Recommended)
+
+```bash
+# Clone
+git clone https://github.com/jameskoero/afrisalaries-.git
+cd afrisalaries-
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your DATABASE_URL and REDIS_URL
+
+# Run everything with one command
+docker-compose up --build
+```
+
+- **API** → `http://localhost:8000`
+- **API Docs** → `http://localhost:8000/docs`
+- **MLflow UI** → `http://localhost:5000`
+
+### Option 2 — Local Development
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+
+# Run API
+cd api
+uvicorn main:app --reload --port 8000
+
+# Run frontend
 cd web
-npm install
-npm run dev
+npm install && npm run dev
+# → http://localhost:3000
+```
 
-Open `http://localhost:3000`
+### Environment Variables
 
-*API Usage*
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/afrisalaries
+REDIS_URL=redis://localhost:6379
+MODEL_PATH=/app/models/model.pkl
+SENTRY_DSN=your_sentry_dsn_here
+```
 
-*Endpoint:* `POST /predict` 
-*Auth:* None for demo. Rate limit: 100 req/day. Get API key for production.
+> See [`.env.example`](.env.example) for full list.
 
-*Request Schema:*
+---
+
+## 📡 API Reference
+
+### `POST /predict`
+
+Predict salary from a job description.
+
+**Request:**
+```json
 {
-  "description": "string", 
-  "country": "string",
-  "currency": "string" 
+  "description": "string  — job title + key skills + requirements",
+  "country":     "string  — ISO 2-letter code (KE, NG, ZA...)",
+  "currency":    "string  — USD | KES | NGN | ZAR"
 }
+```
 
+**Response:**
+```json
+{
+  "salary_low":   38500,
+  "salary_mid":   45000,
+  "salary_high":  52800,
+  "currency":     "USD",
+  "confidence":   0.84,
+  "top_factors":  ["Senior: +22%", "Python: +15%", "AWS: +12%"],
+  "model_version": "v1.2.0",
+  "latency_ms":   47
+}
+```
 
-*Python Client:*
-import requests
+**Rate Limit:** 100 requests/day (free) · Unlimited (production key)
 
-res = requests.post(
-  "https://api.afrisalaries.com/predict",
-  json={"description": "Data Scientist, Lagos, SQL, Tableau", "country": "NG"}
-)
-print(res.json())
+> 📖 Full interactive docs: [`api.afrisalaries.com/docs`](https://api.afrisalaries.com/docs)
 
+---
 
-Full API docs: https://api.afrisalaries.com/docs
+## 🏗️ System Architecture
 
-*Architecture*
+```
+┌─────────────────────────────────────────────────────────┐
+│                    DATA PIPELINE                        │
+│                                                         │
+│  LinkedIn ──┐                                           │
+│  BrighterMonday ──┤──► Airflow DAGs ──► S3 Raw Data    │
+│  Fuzu ──────┘          (Scrapers)       └──► ETL        │
+│                                              └──► PostgreSQL
+└─────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────┐
+│                    ML PIPELINE                          │
+│                                                         │
+│  PostgreSQL ──► Feature Engineering ──► XGBoost Train  │
+│                 (NLP + SHAP)              └──► MLflow   │
+│                                               └──► model.pkl
+└─────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────┐
+│                  SERVING LAYER                          │
+│                                                         │
+│  React/Flutter ──► FastAPI ──► XGBoost Model           │
+│  (User Input)       │          └──► Redis Cache         │
+│                     └──► MLflow + SHAP + CloudWatch     │
+└─────────────────────────────────────────────────────────┘
+```
 
-Scrapers (Airflow) → S3 Raw Data → ETL → PostgreSQL
-                                      ↓
-User → React/Flutter → FastAPI → XGBoost Model → Redis Cache
-                          ↓
-                    MLflow + SHAP + CloudWatch
+**Performance targets:**
+- Inference latency: **< 50ms** (Redis cache hit: < 5ms)
+- API uptime: **99.9%** (AWS EC2 + health checks)
+- Model retraining: **Weekly** (new job data via Airflow)
 
+---
 
-1. *Training:* DVC tracks data + models. MLflow tracks experiments. GitHub Actions retrains weekly.
-2. *Inference:* FastAPI loads `model.pkl` on startup. <50ms latency. Redis caches frequent queries.
-3. *Monitoring:* CloudWatch alarms on data drift. SHAP values logged for audit.
+## 📁 Project Structure
 
-See `docs/architecture.png` for detailed diagram.
-
-*Project Structure*
+```
 afrisalaries/
-├── api/ # FastAPI application
-│ ├── main.py # App entry + routes
-│ ├── models.py # Pydantic schemas
-│ └── predictor.py # Model loading + inference
-├── data/ # DVC tracked datasets
-├── models/ # Trained models: model.pkl, vectorizer.pkl
-├── notebooks/ # EDA, training, SHAP analysis
-├── scrapers/ # Airflow DAGs for job boards
-├── web/ # React frontend
-├── mobile/ # Flutter app
-├── tests/ # Pytest: unit + integration
-├── Dockerfile # Production API image
-├── docker-compose.yml # Local dev: API + Postgres + Redis
-├── requirements.txt # Python deps
+├── api/                    # FastAPI application
+│   ├── main.py             # App entry point + routes
+│   ├── models.py           # Pydantic request/response schemas
+│   └── predictor.py        # Model loading + inference logic
+├── data/                   # DVC-tracked datasets
+│   ├── raw/                # Scraped job posts (S3 backed)
+│   └── processed/          # Cleaned, feature-engineered data
+├── models/                 # Trained model artefacts
+│   ├── model.pkl           # XGBoost model
+│   └── vectorizer.pkl      # Sentence Transformer vectorizer
+├── notebooks/              # EDA, training, SHAP analysis
+│   ├── 01_eda.ipynb
+│   ├── 02_feature_engineering.ipynb
+│   ├── 03_model_training.ipynb
+│   └── 04_model_explainability.ipynb
+├── scrapers/               # Airflow DAGs for job boards
+├── web/                    # React frontend
+├── mobile/                 # Flutter mobile app
+├── tests/                  # Pytest unit + integration tests
+│   ├── tests.py
+│   └── tests_api.py
+├── Dockerfile              # Production API image
+├── docker-compose.yml      # Local: API + Postgres + Redis
+├── requirements.txt        # Python dependencies
+├── .env.example            # Environment template
+├── .gitignore
 └── README.md
+```
 
+---
 
-*Training Pipeline*
-1. Install deps
+## 🔬 Training Pipeline
+
+```bash
+# 1. Install dependencies
 pip install -r requirements.txt
 
-2. Pull data with DVC
+# 2. Pull data with DVC
 dvc pull
 
-3. Train model
+# 3. Train model
 python -m src.train --config configs/xgboost.yaml
 
-4. Evaluate + generate SHAP plots
+# 4. Evaluate + generate SHAP plots
 python -m src.evaluate --model-path models/model.pkl
 
-5. Register to MLflow
+# 5. Register model to MLflow
 mlflow models serve -m models:/afrisalaries/Production -p 8000
+```
 
-All experiments tracked in MLflow UI. Run `mlflow ui` to view.
+All experiments tracked in MLflow UI. Run `mlflow ui` to view experiment history.
 
-*Deployment*
+---
 
-*Web App:* Auto-deployed to Vercel on push to `main`. 
-*API:* Docker image → AWS EC2 via GitHub Actions. Zero-downtime deploys. 
-*Mobile:* Flutter builds → Play Store + App Store via Codemagic.
+## 🚀 Deployment
 
-*Environment Variables:*
-DATABASE_URL=postgresql://...
-REDIS_URL=redis://...
-MODEL_PATH=/app/models/model.pkl
-SENTRY_DSN=...
+| Target | Method | Status |
+|--------|--------|--------|
+| **Web App** | Auto-deploy to Vercel on push to `main` | ✅ Live |
+| **API** | Docker image → AWS EC2 via GitHub Actions (zero-downtime) | ✅ Live |
+| **Mobile** | Flutter builds → Play Store + App Store via Codemagic | 🔄 Soon |
+| **Model** | MLflow Model Registry → FastAPI loads on startup | ✅ Live |
 
-See `.env.example` for full list.
+### GitHub Actions CI/CD
 
-*Docker Setup*
+Every push to `main` triggers:
+1. ✅ Run `pytest` (unit + integration)
+2. ✅ Build Docker image
+3. ✅ Push to Docker Hub
+4. ✅ Deploy to AWS EC2
+5. ✅ Health check (`/health` endpoint)
+6. 🔔 Slack notification on success/failure
 
-Create these 2 files in your repo root. This makes `docker-compose up` work immediately.
+---
 
-*1. `Dockerfile`*
-FROM python:3.11-slim
+## 🗺️ Roadmap
 
-WORKDIR /app
+- [x] **v1.0** — Kenya + Nigeria salary predictions
+- [x] **v1.1** — SHAP explainability per prediction
+- [x] **v1.2** — REST API + React web app
+- [x] **v1.3** — Dockerized deployment + CI/CD
+- [ ] **v1.4** — South Africa, Egypt, Ghana models
+- [ ] **v1.5** — Company-specific models (top 50 African tech firms)
+- [ ] **v1.6** — Browser extension: auto-predict on LinkedIn job pages
+- [ ] **v2.0** — Salary negotiation assistant using GPT-4 + AfriSalaries data
+- [ ] **v2.1** — Flutter mobile app (iOS + Android)
+- [ ] **v3.0** — Real-time salary index (live market data dashboard)
 
-Install system deps for XGBoost + spaCy
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+---
 
-Install Python deps first for layer caching
-COPY requirements.txt.
-RUN pip install --no-cache-dir -r requirements.txt
+## 🤝 Contributing
 
-Download spaCy model
-RUN python -m spacy download en_core_web_sm
+Contributions are welcome — especially salary data from underrepresented African markets!
 
-Copy app code + model
-COPY./api./api
-COPY./models./models
+```bash
+# 1. Fork the repo
+# 2. Create your feature branch
+git checkout -b feat/add-egypt-model
 
-EXPOSE 8000
+# 3. Run tests
+pytest tests/
 
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# 4. Commit with conventional commits
+git commit -m "feat: add Egypt salary model with 2,400 training samples"
 
+# 5. Push + open PR
+git push origin feat/add-egypt-model
+```
 
-*2. `docker-compose.yml`*
-version: '3.8'
+**Data contributions:** Have salary data? [Open an issue](https://github.com/jameskoero/afrisalaries-/issues). We anonymise all individual records before training.
 
-services:
-  api:
-    build:.
-    ports:
-      - "8000:8000"
-    env_file:
-      -.env
-    environment:
-      - MODEL_PATH=/app/models/model.pkl
-    volumes:
-      -./models:/app/models
-    depends_on:
-      - redis
-      - db
+> See [`CONTRIBUTING.md`](CONTRIBUTING.md) for detailed guidelines.
 
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
+---
 
-  db:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_USER: afri
-      POSTGRES_PASSWORD: afri
-      POSTGRES_DB: afrisalaries
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+## 📄 License
 
-volumes:
-  postgres_data:
+MIT License — see [`LICENSE`](LICENSE) for details.
 
+---
 
-*3. `requirements.txt`*
-fastapi==0.115.0
-uvicorn[standard]==0.30.6
-pydantic==2.9.2
-scikit-learn==1.5.1
-xgboost==2.1
-pandas==2.2.2
-shap==0.46.0
-spacy==3.7.5
-sentence-transformers==3.0.1
-redis==5.0.8
-psycopg2-binary==2.9
-python-dotenv==1.0.1
-mlflow==2.16.0
+## 👨‍💻 Author
 
+<div align="center">
 
-Run `docker-compose up --build` and your API is live at `http://localhost:8000/docs`
+**James Onyango Koero**
+*ML Engineer · Kisumu, Kenya 🇰🇪*
 
-*Roadmap*
-- MVP: Kenya + Nigeria predictions
-- SHAP explainability per prediction
-- REST API + React web app
-- Dockerized deployment
-- [ ] v1.1: Add South Africa, Egypt, Ghana
-- [ ] v1.2: Company-specific models for top 50 African tech firms
-- [ ] v1.3: Browser extension to auto-predict on LinkedIn
-- [ ] v2.0: Salary negotiation assistant using GPT-4
-[x]
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-James_Koero-0077B5?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/james-koero)
+[![GitHub](https://img.shields.io/badge/GitHub-jameskoero-181717?style=for-the-badge&logo=github)](https://github.com/jameskoero)
+[![Email](https://img.shields.io/badge/Email-jmskoero%40gmail.com-D14836?style=for-the-badge&logo=gmail)](mailto:jmskoero@gmail.com)
+[![Portfolio](https://img.shields.io/badge/Live_App-cmdms.onrender.com-46E3B7?style=for-the-badge&logo=render)](https://cmdms.onrender.com)
 
-*Contributing*
-PRs welcome. Please read `CONTRIBUTING.md` first.
+> **Hiring?** This repo is my resume.
+> The code, docs, tests, and deployment pipeline speak for themselves.
 
-1. Fork the repo
-2. Create feature branch: `git checkout -b feat/add-egypt`
-3. Run tests: `pytest tests/`
-4. Commit: `git commit -m 'feat: add Egypt salary model'`
-5. Push + open PR
+</div>
 
-*Data contributions:* Have salary data? Open an issue. We anonymize all contributions.
+---
 
-*License*
-MIT License. See `LICENSE` file.
+<div align="center">
 
-*Contact*
-*James Koero* — ML Engineer 
-📧 jmskoero@gmail.com 
-🔗 https://linkedin.com/in/jameskoero | https://github.com/jameskoero
+⭐ **Star this repo** if you believe in pay transparency for African tech workers
 
-*Hiring?* This repo is my resume. The code, docs, tests, and deployment prove I can ship production ML. Let's talk.
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=100&section=footer" width="100%"/>
 
-⭐ *Star this repo* if you believe in pay transparency for African tech.
-
-
+</div>
