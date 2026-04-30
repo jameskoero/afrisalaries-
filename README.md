@@ -326,16 +326,3 @@ MIT License. See `LICENSE` file.
 
 ⭐ *Star this repo* if you believe in pay transparency for African tech.
 **COPY EVERYTHING ABOVE THIS LINE**
-
----
-
-**After you paste:**
-
-1. **Commit README** → Green button `Commit changes`
-2. **Create the 3 files:** In repo → `Add file` → `Create new file` 
-   - Name: `Dockerfile` → paste the Dockerfile code → Commit
-   - Name: `docker-compose.yml` → paste compose code → Commit 
-   - Name: `requirements.txt` → paste requirements → Commit
-3. **Add topics:** Repo page → About ⚙️ → Topics: 
-   `machine-learning`, `xgboost`, `africa`, `fastapi`, `docker`, `nlp`, `salary-prediction`, `shap`
-
